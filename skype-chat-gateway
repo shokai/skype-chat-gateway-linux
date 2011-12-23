@@ -1,0 +1,62 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'ArgsParser'
+require 'eventmachine'
+require 'evma_httpserver'
+require 'json'
+require 'skype'
+Skype.init 'skype-chat-geteway'
+Skype.attach_wait
+@@app = Skype::Application.new('skype-chat-gateway')
+def skype(command)
+  @@app.invoke(command)
+end
+
+class SkypeHttpServer  < EM::Connection
+  include EM::HttpServer
+  
+  def process_http_request
+    res = EM::DelegatedHttpResponse.new(self)
+    puts "* http #{@http_request_method} #{@http_path_info} #{@http_query_string} #{@http_post_content}"
+    if @http_request_method == 'POST'
+      puts cmd = "chatmessage #{@@chat_id} #{@http_post_content}"
+      res.content = skype cmd
+      res.status = 200
+      res.send_response
+    elsif @http_request_method == 'GET'
+      res.status = 200
+      res.content = 'skype-chat-gateway.'
+      res.send_response
+    end
+  end
+end
+
+parser = ArgsParser.parser
+parser.comment(:port, 'http port', 8787)
+parser.comment(:chat, 'chat id')
+parser.comment(:app, 'app name', 'skype-chat-gateway')
+parser.bind(:help, :h, 'show help')
+
+first, params = parser.parse ARGV
+
+if parser.has_option(:help)
+  puts parser.help
+  puts "#{$0} -> get chat list"
+  puts "#{$0} -chat -> "
+  exit
+end
+
+if !parser.has_param(:chat)
+  skype('SEARCH RECENTCHATS').split(/,* /).each do |c|
+    puts c
+  end
+  exit
+end
+
+@@chat_id = params[:chat]
+puts "chat : #{@@chat_id}"
+
+EM::run do
+  EM::start_server('0.0.0.0', params[:port].to_i, SkypeHttpServer)
+  puts "start HTTP server - port #{params[:port].to_i}"
+end
