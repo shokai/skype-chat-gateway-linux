@@ -1,6 +1,6 @@
 Skype Chat Gateway for Linux
 ============================
-Skype Chat <--(HTTP)--> Your Apps
+Skype Chat <--(HTTP)-- Your Apps
 
 Skype API
 ---------
