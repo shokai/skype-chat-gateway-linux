@@ -10,7 +10,8 @@ https://developer.skype.com/public-api-reference-index
 Install Dependencies
 --------------------
 
-    % gem install Ruby4Skype ruby-dbus eventmachine eventmachine_httpserver
+    % gem install bundler
+    % bundle install
 
 
 bugfix Ruby4Skype
