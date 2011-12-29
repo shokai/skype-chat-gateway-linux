@@ -1,3 +1,5 @@
 *.lock
 *.tmp
 *~
+config.yaml
+*#*

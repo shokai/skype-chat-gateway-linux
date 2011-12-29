@@ -23,29 +23,37 @@ edit line:17 in $GEM_HOME/gems/Ruby4Skype-0.4.1/lib/skype/os/linux.rb
     + super(app_name)
 
 
+Config
+------
+
+    % cp sample.config.yaml config.yaml
+
+edit it.
+
+
 Run
 ---
 
 show help
 
-    % skype-chat-gateway -h
+    % ruby skype-chat-gateway.rb -h
 
 get chat list
 
-    % skype-chat-gateway
+    % ruby skype-chat-gateway.rb -list
 
 run http server
 
-    % skype-chat-gateway -chat 'chat_id'
+    % ruby skype-chat-gateway.rb
 
-!! use SINGLE quotation for chat_id
 
 HTTP Interface
 --------------
 
 post message
 
-    % curl -d 'hello skype gateway' http://localhost:8787
+    % curl -d 'hello skype gateway' http://localhost:8787/chat-name
+
 
 LICENSE:
 ========
