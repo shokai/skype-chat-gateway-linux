@@ -1,3 +1,5 @@
+source :rubygems
+
 gem 'ArgsParser'
 gem 'eventmachine'
 gem 'eventmachine_httpserver'
