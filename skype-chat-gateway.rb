@@ -28,7 +28,7 @@ begin
   p @@conf
 rescue => e
   STDERR.puts e
-  STDEER.puts 'config.yaml load error!!'
+  STDERR.puts 'config.yaml load error!!'
   exit 1
 end
 
