@@ -53,6 +53,7 @@ HTTP Interface
 post message
 
     % curl -d 'hello skype gateway' http://localhost:8787/chat/CHAT_NAME
+    % curl -d 'hello hello!!' http://localhost:8787/message/USER_NAME
 
 
 LICENSE:

@@ -50,8 +50,15 @@ class SkypeHttpServer  < EM::Connection
         to = @@conf['chats'][ @http_path_info.scan(/^\/chat\/(.+)/)[0][0] ]
         case @http_request_method
         when 'POST'
-          res.content = skype "chatmessage #{to} #{@http_post_content}"
+          res.content = skype "CHATMESSAGE #{to} #{@http_post_content}"
           res.status = 200
+        end
+      when /^\/message\/.+/
+        to = @http_path_info.scan(/^\/message\/(.+)/)[0][0]
+        case @http_request_method
+        when 'POST'
+          res.content = skype "MESSAGE #{to} #{@http_post_content}"
+          res.status
         end
       when '/'
         res.content = 'skype-chat-gateway - https://github.com/shokai/skype-chat-gateway-linux'
