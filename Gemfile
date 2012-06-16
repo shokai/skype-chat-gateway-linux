@@ -1,6 +1,6 @@
 source :rubygems
 
-gem 'ArgsParser'
+gem 'args_parser'
 gem 'eventmachine'
 gem 'eventmachine_httpserver'
 gem 'json'

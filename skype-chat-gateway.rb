@@ -1,22 +1,21 @@
 #!/usr/bin/env ruby
 require 'rubygems'
 require 'bundler/setup'
-require 'ArgsParser'
+require 'args_parser'
 require 'eventmachine'
 require 'evma_httpserver'
 require 'json'
 require 'yaml'
 require 'skype'
 
-parser = ArgsParser.parser
-parser.comment(:port, 'http port', 8787)
-parser.comment(:list, 'show chat list')
-parser.bind(:config, :c, 'config file path', File.dirname(__FILE__)+'/config.yaml')
-parser.bind(:help, :h, 'show help')
+parser = ArgsParser.parse ARGV do
+  arg :help, 'show help', :alias => :h
+  arg :port, 'http port', :default => 8787
+  arg :list, 'show chat list'
+  arg :config, 'config file path', :alias => :c, :default => "#{File.dirname __FILE__}/config.yaml"
+end
 
-first, params = parser.parse ARGV
-
-if parser.has_option(:help)
+if parser.has_option? :help
   puts parser.help
   puts "#{$0} -list"
   puts "#{$0} -run"
@@ -24,7 +23,7 @@ if parser.has_option(:help)
 end
 
 begin
-  @@conf = YAML::load open(params[:config])
+  @@conf = YAML::load open(parser[:config])
   p @@conf
 rescue => e
   STDERR.puts e
@@ -69,7 +68,7 @@ class SkypeHttpServer  < EM::Connection
 end
 
 
-if parser.has_option(:list)
+if parser.has_option? :list
   skype('SEARCH RECENTCHATS').split(/,* /).each do |c|
     puts c
   end
@@ -78,6 +77,6 @@ end
 
 
 EM::run do
-  EM::start_server('0.0.0.0', params[:port].to_i, SkypeHttpServer)
-  puts "start HTTP server - port #{params[:port].to_i}"
+  EM::start_server('0.0.0.0', parser[:port].to_i, SkypeHttpServer)
+  puts "start HTTP server - port #{parser[:port].to_i}"
 end
