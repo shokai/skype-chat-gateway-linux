@@ -5,14 +5,13 @@ require 'args_parser'
 require 'eventmachine'
 require 'evma_httpserver'
 require 'json'
-require 'yaml'
 require 'skype'
 
 parser = ArgsParser.parse ARGV do
   arg :help, 'show help', :alias => :h
   arg :port, 'http port', :default => 8787
   arg :list, 'show chat list'
-  arg :config, 'config file path', :alias => :c, :default => "#{File.dirname __FILE__}/config.yaml"
+  arg :config, 'config file path', :alias => :c, :default => "#{File.dirname __FILE__}/config.yml"
 end
 
 if parser.has_option? :help
@@ -27,7 +26,7 @@ begin
   p @@conf
 rescue => e
   STDERR.puts e
-  STDERR.puts 'config.yaml load error!!'
+  STDERR.puts 'config.yml load error!!'
   exit 1
 end
 

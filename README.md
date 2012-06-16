@@ -26,7 +26,7 @@ edit line:17 in $GEM_HOME/gems/Ruby4Skype-0.4.1/lib/skype/os/linux.rb
 Config
 ------
 
-    % cp sample.config.yaml config.yaml
+    % cp sample.config.yml config.yml
 
 edit it.
 
