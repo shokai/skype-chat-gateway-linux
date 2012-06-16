@@ -45,25 +45,27 @@ class SkypeHttpServer  < EM::Connection
     res = EM::DelegatedHttpResponse.new(self)
     puts "* http #{@http_request_method} #{@http_path_info} #{@http_query_string} #{@http_post_content}"
     begin
-      if @http_path_info =~ /^\/.+/
-        puts @chat_name = @http_path_info.scan(/^\/(.+)/).first.first
-        puts @chat_id = @@conf['chats'][@chat_name]
-      end
-      if @http_request_method == 'POST'
-        puts cmd = "chatmessage #{@chat_id} #{@http_post_content}"
-        res.content = skype cmd
+      case @http_path_info
+      when /^\/chat\/.+/
+        to = @@conf['chats'][ @http_path_info.scan(/^\/chat\/(.+)/)[0][0] ]
+        case @http_request_method
+        when 'POST'
+          res.content = skype "chatmessage #{to} #{@http_post_content}"
+          res.status = 200
+        end
+      when '/'
+        res.content = 'skype-chat-gateway - https://github.com/shokai/skype-chat-gateway-linux'
         res.status = 200
-        res.send_response
-      elsif @http_request_method == 'GET'
-        res.status = 200
-        res.content = 'skype-chat-gateway.'
-        res.send_response
+      else
+        res.content = 'not found'
+        res.status = 404
       end
     rescue => e
+      STDERR.puts e
       res.content = e.to_s
       res.status = 500
-      res.send_response
     end
+    res.send_response
   end
 end
 

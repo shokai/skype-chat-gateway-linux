@@ -36,7 +36,7 @@ Run
 
 show help
 
-    % ruby skype-chat-gateway.rb -h
+    % ruby skype-chat-gateway.rb -help
 
 get chat list
 
@@ -52,7 +52,7 @@ HTTP Interface
 
 post message
 
-    % curl -d 'hello skype gateway' http://localhost:8787/chat-name
+    % curl -d 'hello skype gateway' http://localhost:8787/chat/CHAT_NAME
 
 
 LICENSE:
