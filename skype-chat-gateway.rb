@@ -31,11 +31,12 @@ rescue => e
   exit 1
 end
 
-Skype.init @@conf['app_name']
-Skype.attach_wait
-@@app = Skype::Application.new(@@conf['app_name'])
 def skype(command)
-  @@app.invoke(command)
+  (@@app ||= (
+              Skype.init @@conf['app_name']
+              Skype.attach_wait
+              Skype::Application.new(@@conf['app_name'])
+              )).invoke command
 end
 
 class SkypeHttpServer  < EM::Connection
