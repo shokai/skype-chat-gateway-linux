@@ -1,7 +1,5 @@
 app_name : 'skype-chat-gateway'
 
-port : 8787
-
 chats : 
   chatname : 'your-chat-id;12abcd3456'
   chatname2 : 'your-chat-id-2;1a23b4c567'
